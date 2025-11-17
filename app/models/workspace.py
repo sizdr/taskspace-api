@@ -13,7 +13,7 @@ class Workspace(SQLModel, table=True):
     description:str
     tenant_id: int = Field(foreign_key="tenants.id")
     create_by: int = Field(foreign_key="users.id")
-    is_archived: bool
+    is_archived: bool = Field(default=False)
 
     tenant: "Tenant" = Relationship(back_populates="workspaces")
     user: "User" = Relationship(back_populates="workspaces")
