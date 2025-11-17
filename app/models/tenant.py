@@ -1,7 +1,13 @@
-from sqlmodel import SQLModel, Field, DateTime
-from typing import Optional
+from sqlmodel import SQLModel, Field, DateTime, Relationship
+from typing import Optional, TYPE_CHECKING, List
+from datetime import datetime, timezone
+if TYPE_CHECKING:
+    from .user import User
 
-class Tenant(SQLModel):
+class Tenant(SQLModel, table=True):
+    __tablename__ = "tenants"
     id:Optional[int] = Field(default=None, primary_key=True, index=True)
     name:str
-    created_at:DateTime
+    created_at:datetime = Field(default_factory= lambda: datetime.now(timezone.utc))
+
+    users: List["User"] = Relationship(back_populates="tenant")
