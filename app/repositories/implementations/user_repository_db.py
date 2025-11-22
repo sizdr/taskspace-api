@@ -3,15 +3,15 @@ from typing import Optional, List
 from app.models import User
 
 class UserRepositoryDB:
-    def __init__(self, session: Session, tenant_id:int):
+    def __init__(self, session: Session, organization_id:int):
         self.session = session
-        self.tenant_id = tenant_id
+        self.organization_id = organization_id
 
     def _base_stmt(self):
-        return select(User).where(User.tenant_id == self.tenant_id) 
+        return select(User).where(User.organization_id == self.organization_id) 
 
     def get_by_id(self, user_id: int) -> Optional[User]:
-        stmt = self._base_stmt().where(User.tenant_id == user_id)
+        stmt = self._base_stmt().where(User.organization_id == user_id)
         return self.session.exec(stmt).first()
 
     def get_by_email(self, email: str) -> Optional[User]:
@@ -19,7 +19,7 @@ class UserRepositoryDB:
         return self.session.exec(stmt).first()
 
     def create(self, user: User) -> User:
-        user.tenant_id = self.tenant_id
+        user.organization_id = self.organization_id
         self.session.add(user)
         self.session.commit()
         self.session.refresh(user)
