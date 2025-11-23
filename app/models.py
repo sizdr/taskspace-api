@@ -34,7 +34,7 @@ class User(SQLModel, table=True):
     organization_id: int = Field(foreign_key="organizations.id")
 
     organization: "Organization" = Relationship(back_populates="users")
-    workspaces: List["Workspace"] = Relationship(back_populates="user")
+    workspaces: List["Workspace"] = Relationship(back_populates="creator")
 
 
 class Workspace(SQLModel, table=True):
